@@ -6,9 +6,10 @@ from display import *
 import streamlit as st
 
 class SQLChatbotWithTweaks(SQLChatbot):
-    def _add_tweaks(self, query, ask):
+    def _add_tweaks(self, query, ask, is_new):
         new_tweak = Tweak(ask=ask, sql=query)
-        if 'tweaks' not in st.session_state:
+        # when the system consider the ask is new, we reset the tweak history.
+        if 'tweaks' not in st.session_state or is_new:
             st.session_state.tweaks = [new_tweak]
         else:
             st.session_state.tweaks.append(new_tweak)
@@ -24,7 +25,7 @@ class SQLChatbotWithTweaks(SQLChatbot):
         # now based on the user query, we generate the answer
         generated_query = waii.query.generate(QueryGenerationRequest(ask=user_query, tweak_history=self._get_tweaks()))
 
-        self._add_tweaks(generated_query.query, user_query)
+        self._add_tweaks(generated_query.query, user_query, generated_query.is_new)
 
         # get run query result
         df = generated_query.run().to_pandas_df()

@@ -57,3 +57,5 @@ This will upgrade the SQL bot to execute the generated SQL query and display the
 ### Step 3: SQL bot with capability to update the query (20 mins)
 
 This will allow the user to update the generated SQL query, ask to fix the query, and re-run the query.
+
+[SQL bot with update](./lab-docs/3_sql_bot_with_update.md)

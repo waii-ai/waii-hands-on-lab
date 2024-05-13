@@ -63,6 +63,10 @@ It looks like:
 
 ![SQL bot with results](screenshots/2_sql_bot_with_format_and_tables.png)
 
+## Bonus: only show the query run results
+
+The detailed steps and the SQL query are useful for debugging, but in the real world, you may want to show only the results. Can you try to show only the results?
+
 ## Next step?
 
 Now that you have a SQL bot that can generate SQL queries, execute them, and display the results. You may want to update the query, ask to fix the query, etc. let's move to the next step.

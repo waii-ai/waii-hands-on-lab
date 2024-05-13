@@ -8,9 +8,7 @@ import re
 import os
 import streamlit as st
 import builtins
-from agent import fix_plot
 from streamlit.logger import get_logger
-from data_holder import DataHolder
 
 log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
 logger = get_logger(__name__)

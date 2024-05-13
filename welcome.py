@@ -7,8 +7,6 @@ from streamlit.logger import get_logger
 from streamlit.web.server.websocket_headers import _get_websocket_headers
 from waii_sdk_py.waii_sdk_py import Waii
 
-from data_holder import DataHolder
-
 log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
 logger = get_logger(__name__)
 logger.setLevel(log_level)
