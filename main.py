@@ -8,7 +8,6 @@ from bots.sql_chatbot_with_data_insights import SQLChatbotWithDataInsights
 from bots.sql_chatbot_with_result import SQLChatbotWithResult
 from bots.sql_chatbot_with_tweaks import SQLChatbotWithTweaks
 from history import *
-from welcome import *
 
 log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
 logger = get_logger(__name__)
