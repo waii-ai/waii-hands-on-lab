@@ -21,6 +21,7 @@ class AssistantMessageType:
     Text = 'text'
     Step = 'step'
     Data = 'data'
+    TextStream = 'text_stream'
 
 
 class AssistantMessage:
@@ -170,6 +171,29 @@ handlers = {
 separators = ["{tables}", "{steps}", "{graph}", "{sql}", "{data}", "{compilation_errors}"]
 pattern = f"({'|'.join(re.escape(separator) for separator in separators)})"
 
+def handle_text_stream(msg):
+    text_stream = msg.content
+    if not text_stream:
+        display_msg_cont(
+            'Apologies, I have encountered an error. Please try again. If the problem persists, try refreshing the page.',
+            'assistant')
+        return
+
+    answer = ''
+    end = False
+    while not end:
+        with st.empty():
+            end = True
+            for chunk in text_stream:
+                if chunk.choices[0].delta.content is not None:
+                    st.empty()
+                    answer += chunk.choices[0].delta.content
+                    display_answer(answer, 'assistant', False)
+
+    # at the end, we add the total answer to the session, and set the type back to text
+    msg.content = answer
+    msg.type = AssistantMessageType.Text
+
 def display_answer(assistant_output: Union[AssistantOutput, str], author: str, add_to_session=True):
     if add_to_session:
         st.session_state.messages.append({'type': 'parts', 'role': author, 'output': assistant_output})
@@ -179,7 +203,9 @@ def display_answer(assistant_output: Union[AssistantOutput, str], author: str, a
 
     for msg in assistant_output.messages:
         if msg.type == AssistantMessageType.Text:
-            st.write(msg.content, author)
+            st.write(msg.content)
+        elif msg.type == AssistantMessageType.TextStream:
+            handle_text_stream(msg)
         elif msg.type == AssistantMessageType.SQL:
             handle_sql(msg.content)
         elif msg.type == AssistantMessageType.Step:

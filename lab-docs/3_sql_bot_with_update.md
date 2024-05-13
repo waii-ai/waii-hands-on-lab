@@ -78,4 +78,4 @@ You can check the full source code of the SQL bot with tweaks at [bots/sql_chatb
 
 ### Next step
 
-Now we are able to generate query, get query results, and update the query based on the previous questions.
+Now we are able to generate query, get query results, and update the query based on the previous questions. But there's no insights from the result. Let's use the LLM to show insights from the data. And make it more like a human.

@@ -67,6 +67,14 @@ It looks like:
 
 The detailed steps and the SQL query are useful for debugging, but in the real world, you may want to show only the results. Can you try to show only the results?
 
+## Bonus: handle query generation error
+
+What if the generated query has an error? For Waii, it will refuse to generate a query if the question is out of scope of the database connected.
+
+You can try it by asking a question like "how can i make a coffee?"
+
+Can you handle the error and display the error message instead of showing the error message stacktrace from the SDK?
+
 ## Next step?
 
 Now that you have a SQL bot that can generate SQL queries, execute them, and display the results. You may want to update the query, ask to fix the query, etc. let's move to the next step.
