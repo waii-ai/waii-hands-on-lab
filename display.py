@@ -25,7 +25,7 @@ class AssistantMessageType:
 
 
 class AssistantMessage:
-    def __init__(self, content: str, type: str):
+    def __init__(self, content, type: str):
         self.content = content
         self.type = type
 
@@ -117,14 +117,14 @@ def exec_safe(plot, df):
         display_msg_cont('I encountered an error and could not generate the plot. Apologies for the inconvenience, please try again later.', 'assistant')
 
 
-def display_plot(df, plot, author):
+def display_plot(df, plot):
     exec_safe(plot, df)
 
 def handle_data(df):
     display_df(df, 'assistant')
 
-def handle_graph(data, part):
-    display_plot(data.df, data.plot, 'assistant')
+def handle_graph(df, plot):
+    display_plot(df, plot)
 
 def handle_steps(steps):
     if steps:
@@ -212,6 +212,8 @@ def display_answer(assistant_output: Union[AssistantOutput, str], author: str, a
             handle_steps(msg.content)
         elif msg.type == AssistantMessageType.Data:
             handle_data(msg.content)
+        elif msg.type == AssistantMessageType.Plot:
+            handle_graph(msg.content[0], msg.content[1])
         else:
             print('checks', msg.type)
             display_msg_cont('Unknown message type.', 'assistant')

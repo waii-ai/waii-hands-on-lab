@@ -11,7 +11,7 @@ def _check_openai_api_key():
     openai.api_key = api_key
 
 
-def get_openai_output(prompt, sys_msg=None, stream=False):
+def get_openai_output(prompt, sys_msg=None, stream=False, max_tokens=1024):
     try:
         if sys_msg:
             messages = [{"role": "system", "content": sys_msg}]
@@ -22,10 +22,16 @@ def get_openai_output(prompt, sys_msg=None, stream=False):
             model="gpt-4-turbo",
             messages=messages + [{"role": "user", "content": prompt}],
             temperature=0,
-            stream=stream
+            stream=stream,
+            max_tokens=max_tokens
         )
+
+        print(f"openai request: {prompt}")
+
         if not stream:
-            return response.choices[0].message.content.strip()
+            response = response.choices[0].message.content.strip()
+            print(f"response: {response}")
+            return response
         else:
             return response
     except Exception as e:
