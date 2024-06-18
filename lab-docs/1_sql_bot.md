@@ -108,7 +108,11 @@ This code generates the SQL query based on the user query using the WAII SDK `ge
 ## Run it!
 
 ```
-WAII_API_KEY='...' WAII_API_SERVER_URL="..." DATABASE_CONNECTION_KEY='...' LOG_LEVEL=DEBUG streamlit run main.py
+export WAII_API_KEY='abc123............xxxxxxxxx'
+export WAII_API_SERVER_URL="https://.../api/"
+export DATABASE_CONNECTION_KEY='snowflake://...'
+
+LOG_LEVEL=DEBUG streamlit run main.py
 ```
 
 You should be able to see the number of tables as part of the welcome message, and you can ask questions like:
