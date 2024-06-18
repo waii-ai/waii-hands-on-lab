@@ -32,10 +32,10 @@ def run_chatbot(bot: BasicChatbot):
             answer = bot.create_answer(user_query)
 
 if __name__ == "__main__":
-    #bot = BasicChatbot()
+    bot = BasicChatbot()
     #bot = SQLChatbot()
     #bot = SQLChatbotWithResult()
     #bot = SQLChatbotWithTweaks()
     #bot = SQLChatbotWithDataInsights()
-    bot = SQLChatbotWithVisualization()
+    #bot = SQLChatbotWithVisualization()
     run_chatbot(bot)
