@@ -1,13 +1,6 @@
-import streamlit as st
-from streamlit.logger import get_logger
-
 from bots import *
 from bots.basic_chatbot import BasicChatbot
 from bots.sql_chatbot import SQLChatbot
-from bots.sql_chatbot_with_data_insights import SQLChatbotWithDataInsights
-from bots.sql_chatbot_with_result import SQLChatbotWithResult
-from bots.sql_chatbot_with_tweaks import SQLChatbotWithTweaks
-from bots.sql_chatbot_with_visualization import SQLChatbotWithVisualization
 from history import *
 
 log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
@@ -34,8 +27,4 @@ def run_chatbot(bot: BasicChatbot):
 if __name__ == "__main__":
     bot = BasicChatbot()
     #bot = SQLChatbot()
-    #bot = SQLChatbotWithResult()
-    #bot = SQLChatbotWithTweaks()
-    #bot = SQLChatbotWithDataInsights()
-    #bot = SQLChatbotWithVisualization()
     run_chatbot(bot)

@@ -1,40 +1,48 @@
 import logging
 import os
+import streamlit as st
 
-import openai
+from waii_sdk_py.query import *
+from waii_sdk_py.chat import *
+from waii_sdk_py.waii_sdk_py import Waii
 
+from constants import Envs
+from display import display_answer
 
-def _check_openai_api_key():
-    api_key = os.getenv('OPENAI_API_KEY')
-    if api_key is None:
-        raise ValueError('OPENAI_API_KEY is not set')
-    openai.api_key = api_key
+def _sanity_test(waii):
+    # after connection, we can do a sanity tests, to show how many tables we have
+    response = waii.database.get_catalogs()
+    n_tables = 0
+    for catalog in response.catalogs:
+        for schema in catalog.schemas:
+            for _ in schema.tables:
+                n_tables += 1
+    with st.chat_message('assistant'):
+        display_answer(f"Connected to the database with {n_tables} tables", 'assistant', True)
 
+def initialize_waii_client_if_needed():
+    if 'waii_sdk_client' not in st.session_state:
+        waii = Waii()
 
-def get_openai_output(prompt, sys_msg=None, stream=False, max_tokens=1024):
-    try:
-        if sys_msg:
-            messages = [{"role": "system", "content": sys_msg}]
+        # check if we have the API server URL and API key
+        if Envs.ENV_WAII_API_SERVER_URL not in os.environ:
+            raise ValueError(f"Environment variable {Envs.ENV_WAII_API_SERVER_URL} is not set")
+
+        waii_api_key = ''
+        if 'localhost' in os.environ[Envs.ENV_WAII_API_SERVER_URL] or '127.0.0.1' in os.environ[Envs.ENV_WAII_API_SERVER_URL]:
+            pass
         else:
-            messages = []
+            if Envs.ENV_WAII_API_KEY not in os.environ:
+                raise ValueError(f"Environment variable {Envs.ENV_WAII_API_KEY} is not set")
+            waii_api_key = os.environ[Envs.ENV_WAII_API_KEY]
 
-        response = openai.chat.completions.create(
-            model="gpt-4-turbo",
-            messages=messages + [{"role": "user", "content": prompt}],
-            temperature=0,
-            stream=stream,
-            max_tokens=max_tokens
-        )
+        if Envs.ENV_DATABASE_CONNECTION_KEY not in os.environ:
+            raise ValueError(f"Environment variable {Envs.ENV_DATABASE_CONNECTION_KEY} is not set")
 
-        print(f"openai request: {prompt}")
+        waii.initialize(url=os.environ[Envs.ENV_WAII_API_SERVER_URL], api_key=waii_api_key)
+        waii.database.activate_connection(os.environ[Envs.ENV_DATABASE_CONNECTION_KEY])
+        st.session_state['waii_sdk_client'] = waii
 
-        if not stream:
-            response = response.choices[0].message.content.strip()
-            print(f"response: {response}")
-            return response
-        else:
-            return response
-    except Exception as e:
-        msg = str(e)
-        logging.error(msg)
-        return msg
+        _sanity_test(waii)
+    else:
+        return st.session_state['waii_sdk_client']

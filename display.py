@@ -10,10 +10,13 @@ import streamlit as st
 import builtins
 from streamlit.logger import get_logger
 
+from waii_sdk_py.query import *
+from waii_sdk_py.chat import *
+from waii_sdk_py.waii_sdk_py import Waii
+
 log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
 logger = get_logger(__name__)
 logger.setLevel(log_level)
-
 
 class AssistantMessageType:
     SQL = 'sql'
@@ -33,6 +36,41 @@ class AssistantMessage:
 class AssistantOutput:
     def __init__(self, messages: List[AssistantMessage]):
         self.messages = messages
+
+
+def chat_response_to_assistant_output(chat_response: ChatResponse) -> AssistantOutput:
+    messages = []
+
+    # Define a list of handlebars and their corresponding AssistantMessageType
+    patterns = ['{query}', '{plot}', '{data}']
+
+    # Create a regex pattern that matches any of the handlebars
+    pattern = '|'.join(re.escape(hb) for hb in patterns)
+
+    # Split the input string into parts
+    parts = re.split(f'({pattern})', chat_response.response)
+
+    # filter parts that are empty
+    parts = [part for part in parts if part]
+
+    df = None
+    if chat_response.response_data and chat_response.response_data.data:
+        df = chat_response.response_data.data.to_pandas_df()
+
+    for part in parts:
+        if part == '{query}':
+            messages.append(
+                AssistantMessage(content=chat_response.response_data.sql.query, type=AssistantMessageType.SQL))
+        elif part == '{plot}':
+            messages.append(AssistantMessage(content=(df, chat_response.response_data.chart_spec.chart_spec.plot),
+                                             type=AssistantMessageType.Plot))
+        elif part == '{data}':
+            messages.append(AssistantMessage(content=df, type=AssistantMessageType.Data))
+        else:
+            messages.append(AssistantMessage(content=part, type=AssistantMessageType.Text))
+
+    return AssistantOutput(messages=messages)
+
 
 
 def display_msg_cont(msg, author='assistant'):
