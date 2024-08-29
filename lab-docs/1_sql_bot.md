@@ -6,9 +6,10 @@ First of all, you need to create a new bot implementation.
 
 ## Start SQLChatbot
 
-First create a new bot under the `bots` folder.
+First, create a new file to support the SQL bot under the `bots` folder. (you can name it `my_sql_chatbot.py`). There's a `sql_chatbot.py` file already, you can use it directly if you want to skip the coding.
 
 ```python
+# my_sql_chatbot.py
 class SQLChatbot(BasicChatbot):
     ...
 ```
@@ -46,8 +47,8 @@ And inside main.py, use the new bot:
 
 ```python
 if __name__ == "__main__":
-    #bot = BasicChatbot() <-- remove this line
-    bot = SQLChatbot()
+    #bot = BasicChatbot() <-- comment this line
+    bot = SQLChatbot() <-- add this line (also import the module)
     ...
 ```
 
