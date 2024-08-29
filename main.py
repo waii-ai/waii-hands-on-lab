@@ -25,6 +25,6 @@ def run_chatbot(bot: BasicChatbot):
             answer = bot.create_answer(user_query)
 
 if __name__ == "__main__":
-    #bot = BasicChatbot()
-    bot = SQLChatbot()
+    bot = BasicChatbot()
+    #bot = SQLChatbot()
     run_chatbot(bot)
