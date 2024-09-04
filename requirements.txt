@@ -1,4 +1,4 @@
-waii-sdk-py==1.22.0-dev1
+waii-sdk-py==1.22.0-dev2
 streamlit
 pandas
 plotly==5.23.0

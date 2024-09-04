@@ -42,7 +42,7 @@ def chat_response_to_assistant_output(chat_response: ChatResponse) -> AssistantO
     messages = []
 
     # Define a list of handlebars and their corresponding AssistantMessageType
-    patterns = ['{query}', '{plot}', '{data}']
+    patterns = ['<query>', '<chart>', '<data>']
 
     # Create a regex pattern that matches any of the handlebars
     pattern = '|'.join(re.escape(hb) for hb in patterns)
@@ -58,13 +58,13 @@ def chat_response_to_assistant_output(chat_response: ChatResponse) -> AssistantO
         df = chat_response.response_data.data.to_pandas_df()
 
     for part in parts:
-        if part == '{query}':
+        if part == '<query>':
             messages.append(
-                AssistantMessage(content=chat_response.response_data.sql.query, type=AssistantMessageType.SQL))
-        elif part == '{plot}':
-            messages.append(AssistantMessage(content=(df, chat_response.response_data.chart_spec.chart_spec.plot),
+                AssistantMessage(content=chat_response.response_data.query.query, type=AssistantMessageType.SQL))
+        elif part == '<chart>':
+            messages.append(AssistantMessage(content=(df, chat_response.response_data.chart.chart_spec.plot),
                                              type=AssistantMessageType.Plot))
-        elif part == '{data}':
+        elif part == '<data>':
             messages.append(AssistantMessage(content=df, type=AssistantMessageType.Data))
         else:
             messages.append(AssistantMessage(content=part, type=AssistantMessageType.Text))
@@ -143,7 +143,7 @@ def exec_safe(plot, df):
         try:
             exec(plot, execution_globals)
         except Exception as e:
-            logger.info(f"Error in plot: {e}")
+            logger.info(f"Error in plot: {e}, plot=```\n{plot}\n```")
             #try to fix the program
             plot = fix_plot(plot, e)
             logger.info(plot)
