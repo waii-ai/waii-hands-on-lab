@@ -159,8 +159,8 @@ def exec_safe(plot, df):
                                 key = random.randint(0, 100000000)
                                 lines[i] = line.replace(')', f', key="{key}")')
                         plot = '\n'.join(lines)
+                        logger.info(f"Fixed plot (inserted unique key): {plot}")
                         exec(plot, execution_globals)
-                exec(plot, execution_globals)
             except Exception as e:
                 display_msg_cont('I encountered an error and could not generate the plot. Apologies for the inconvenience, please try again later.', 'assistant')
     else:
