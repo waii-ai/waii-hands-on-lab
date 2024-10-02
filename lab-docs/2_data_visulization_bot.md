@@ -2,7 +2,7 @@
 
 Now you know how to build a SQL bot, let's add data and visualization capabilities to the bot.
 
-You can just add more "modules" to the `modules` list in the `chat_message` method. For example, to add data and visualization capabilities, you can add the `data` and `chart` modules.
+You can just add more "modules" to the `modules` list in the `chat_message` method. For example, to add data and visualization capabilities, you can add the `data` and `chart` modules. (Refer to https://github.com/waii-ai/waii-hands-on-lab/blob/main/bots/sql_chatbot_with_visualization.py for the code)
 
 And inside main.py, use the new bot:
 
