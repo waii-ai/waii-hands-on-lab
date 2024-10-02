@@ -1,6 +1,5 @@
 from bots import *
-from bots.basic_chatbot import BasicChatbot
-from bots.sql_chatbot import SQLChatbot
+from bots.sql_chatbot_with_visualization import SQLChatbotWithVisualization
 from history import *
 
 log_level = os.getenv('LOG_LEVEL', 'WARNING').upper()
@@ -25,6 +24,7 @@ def run_chatbot(bot: BasicChatbot):
             answer = bot.create_answer(user_query)
 
 if __name__ == "__main__":
-    #bot = BasicChatbot()
-    bot = SQLChatbot()
+    bot = BasicChatbot()
+    #bot = SQLChatbot()
+    #bot = SQLChatbotWithVisualization()
     run_chatbot(bot)

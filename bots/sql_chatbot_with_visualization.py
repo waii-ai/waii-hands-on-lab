@@ -6,7 +6,7 @@ from display import *
 from utils import initialize_waii_client_if_needed
 
 
-class SQLChatbot(BasicChatbot):
+class SQLChatbotWithVisualization(BasicChatbot):
     def __init__(self):
         initialize_waii_client_if_needed()
 
@@ -18,7 +18,7 @@ class SQLChatbot(BasicChatbot):
         if 'parent_uuid' in st.session_state:
             parent_uuid = st.session_state['parent_uuid']
 
-        response = waii.chat.chat_message(ChatRequest(ask=user_query, modules=["query"], parent_uuid=parent_uuid))
+        response = waii.chat.chat_message(ChatRequest(ask=user_query, modules=["query", "tables", "data", "chart"], parent_uuid=parent_uuid))
 
         # update parent_uuid in session state
         st.session_state['parent_uuid'] = response.chat_uuid
