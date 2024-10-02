@@ -145,7 +145,6 @@ def exec_safe(plot, df):
         except Exception as e:
             logger.info(f"Error in plot: {e}, plot=```\n{plot}\n```")
             #try to fix the program
-            plot = fix_plot(plot, e)
             logger.info(plot)
             try:
                 exec(plot, execution_globals)
