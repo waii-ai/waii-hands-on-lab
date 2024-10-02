@@ -1,4 +1,6 @@
 from bots import *
+from bots.basic_chatbot import BasicChatbot
+from bots.sql_chatbot import SQLChatbot
 from bots.sql_chatbot_with_visualization import SQLChatbotWithVisualization
 from history import *
 
