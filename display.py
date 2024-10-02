@@ -147,6 +147,19 @@ def exec_safe(plot, df):
             #try to fix the program
             logger.info(plot)
             try:
+                if 'with the same auto-generated ID' in str(e):
+                    # find the line start with st.plotly_chart
+                    if 'st.plotly_chart' in plot:
+                        lines = plot.split('\n')
+                        for i, line in enumerate(lines):
+                            if 'st.plotly_chart' in line:
+                                # insert key=... before end of )
+                                # generate a random int
+                                import random
+                                key = random.randint(0, 100000000)
+                                lines[i] = line.replace(')', f', key="{key}")')
+                        plot = '\n'.join(lines)
+                        exec(plot, execution_globals)
                 exec(plot, execution_globals)
             except Exception as e:
                 display_msg_cont('I encountered an error and could not generate the plot. Apologies for the inconvenience, please try again later.', 'assistant')
