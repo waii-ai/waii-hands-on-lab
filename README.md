@@ -19,6 +19,8 @@ source waii/bin/activate
 3. Install the requirements
 
 ```
+git clone https://github.com/waii-ai/waii-hands-on-lab
+cd waii-hands-on-lab
 pip install -r requirements.txt
 ```
 
