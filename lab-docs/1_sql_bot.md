@@ -17,6 +17,13 @@ class SQLChatbot(BasicChatbot):
 And add the following code:
 
 ```python
+from waii_sdk_py.chat import *
+from waii_sdk_py.query import *
+
+from bots.basic_chatbot import BasicChatbot
+from display import *
+from utils import initialize_waii_client_if_needed
+
 class SQLChatbot(BasicChatbot):
     def __init__(self):
         initialize_waii_client_if_needed()
