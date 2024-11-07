@@ -57,7 +57,7 @@ if __name__ == "__main__":
 Just run the following command:
 
 ```
-export WAII_API_SERVER_URL="https://sql.test.waii.ai/api/"
+export WAII_API_SERVER_URL="https://sql.dev.waii.ai/api/"
 export WAII_API_KEY=<use the waii api key you received>
 export DATABASE_CONNECTION_KEY='snowflake://WAII_USER@gqobxjv-bhb91428/MOVIE_DB?role=WAII_USER_ROLE&warehouse=COMPUTE_WH'
 LOG_LEVEL=DEBUG streamlit run main.py
