@@ -1,6 +1,6 @@
 # Build a SQL bot
 
-Now you will build a SQL bot that will execute SQL queries and return the results.
+Now you will build a SQL bot that will create SQL queries to answer a qeustion.
 
 First of all, you need to create a new bot implementation.
 
