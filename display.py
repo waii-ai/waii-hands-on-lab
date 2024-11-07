@@ -42,7 +42,7 @@ def chat_response_to_assistant_output(chat_response: ChatResponse) -> AssistantO
     messages = []
 
     # Define a list of handlebars and their corresponding AssistantMessageType
-    patterns = ['<query>', '<chart>', '<data>']
+    patterns = ['<query>', '<chart>', '<data>', '<steps>']
 
     # Create a regex pattern that matches any of the handlebars
     pattern = '|'.join(re.escape(hb) for hb in patterns)
@@ -66,11 +66,13 @@ def chat_response_to_assistant_output(chat_response: ChatResponse) -> AssistantO
                                              type=AssistantMessageType.Plot))
         elif part == '<data>':
             messages.append(AssistantMessage(content=df, type=AssistantMessageType.Data))
+        elif part == '<steps>':
+            formatted_string = "\n".join(f"{index + 1}. {step}" for index, step in enumerate(chat_response.response_data.query.detailed_steps))
+            messages.append(AssistantMessage(content=formatted_string, type=AssistantMessageType.Text))
         else:
             messages.append(AssistantMessage(content=part, type=AssistantMessageType.Text))
 
     return AssistantOutput(messages=messages)
-
 
 
 def display_msg_cont(msg, author='assistant'):
